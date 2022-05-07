@@ -1,9 +1,10 @@
 import "./App.css";
+import Create from "./components/headquarters/Create";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">hola</header>
+      <Create />
     </div>
   );
 }
