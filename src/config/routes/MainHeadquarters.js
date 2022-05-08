@@ -4,6 +4,7 @@ import Home from "../../pages/Home";
 import CreateHeadquarter from "../../components/headquarters/Create";
 import UpdateHeadquarter from "../../components/headquarters/Update";
 import CreateUser from "../../components/users/Create";
+import UpdateUser from "../../components/users/Update";
 
 const MainHeadquarters = () => {
   return (
@@ -19,6 +20,10 @@ const MainHeadquarters = () => {
 
         <Route path="/home" element={<Home />}>
           <Route path="createuser" element={<CreateUser />} />
+        </Route>
+
+        <Route path="/home" element={<Home />}>
+          <Route path="updateuser" element={<UpdateUser />} />
         </Route>
       </Routes>
     </>

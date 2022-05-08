@@ -32,17 +32,17 @@ const validationSchema = yup.object({
     .required("Campo obligatorio"),
 });
 
-const Create = () => {
+const Update = () => {
   const listHeadquarter = ["Olimpo", "Capitolio", "Hogwart"];
   const [checked, setChecked] = useState(true);
   const [headquarter, setHeadquarter] = useState("Olimpo");
   const formik = useFormik({
     initialValues: {
-      userName: "",
-      userLastName: "",
-      userEmail: "",
-      userPassword: "",
-      userValide: "",
+      userName: "Percy",
+      userLastName: "Jackson",
+      userEmail: "perseus@olimpo.com",
+      userPassword: "Annabeth",
+      userValide: "12 meses",
     },
 
     validationSchema: validationSchema,
@@ -63,7 +63,7 @@ const Create = () => {
           variant="h6"
           sx={{ fontWeight: "medium", color: "#072079" }}
         >
-          CREAR USUARIO
+          EDITAR USUARIO
         </Typography>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={1} mx={5} mt={2}>
@@ -211,4 +211,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Update;
