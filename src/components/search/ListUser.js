@@ -40,7 +40,7 @@ const ListUser = () => {
 
   return (
     <div>
-      <Paper sx={{ width: "140%", mt: 10, mx: 10 }}>
+      <Paper sx={{ width: 1000, mt: 10, mx: 5 }}>
         <Grid container spacing={1} mx={1} mt={2}>
           <Grid item xs={6}>
             <SearchByName />
