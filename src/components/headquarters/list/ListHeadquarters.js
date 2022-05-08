@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import Headquarter from "./Headquarter";
+import { useDispatch, useSelector } from "react-redux";
 
 const ListHeadquarters = () => {
   const [headquarterList, setHeadquarterListList] = useState([]);
@@ -30,8 +31,19 @@ const ListHeadquarters = () => {
     setPage(newPage);
   };
 
+  /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const array_headquarter = useSelector(
+    (state) => state.FirebaseSlice.arrayHeadquarters
+  );
+
   const renderList = () => {
-    return headquarterList
+    return array_headquarter
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((headquarter) => (
         <Headquarter

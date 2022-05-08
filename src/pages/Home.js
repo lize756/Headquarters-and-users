@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { styled, useTheme } from "@mui/material/styles";
@@ -23,10 +23,22 @@ import StoreIcon from "@mui/icons-material/Store";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { getAuth, signOut } from "firebase/auth";
+/**
+ * Firebase
+ */
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../credentiales";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { useSelector, useDispatch} from "react-redux";
 
+
+import {setArrayHeadquarters} from "../store/FirebaseSlice"
+/**
+ * Init auth and firestore
+ */
 const auth = getAuth(firebaseApp);
+const firestore = getFirestore(firebaseApp);
+
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -89,8 +101,55 @@ const Home = () => {
 
   async function handleLogOut(e) {
     const result = await signOut(auth);
-    navigate("/login")
+    navigate("/login");
   }
+
+  /**
+   * ---------------------------------------------
+   * -----------------Firestore-------------------
+   * ---------------------------------------------
+   */
+
+  const [getHeadquarters, setHeadquarters] = React.useState(null);
+  const [getUser, setUser] = useState(null);
+  const headquarters = [];
+
+  async function searchDocumentOrCreate(idDoc) {
+    // Create document reference
+    const docRef = doc(firestore, `user/${idDoc}`);
+    // Search document
+    const consult = await getDoc(docRef);
+    // Check if it exist
+    if (consult.exists()) {
+      // if exist
+      const infoDocu = consult.data();
+      return infoDocu.headquarters;
+    } else {
+      // if not exist
+      await setDoc(docRef, { headquarters: [...[headquarters]] });
+      const consult = await getDoc(docRef);
+      const infoDoc = consult.data();
+      return infoDoc.headquarters;
+    }
+  }
+    /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const userFirebase = useSelector((state) => state.FirebaseSlice.userFirebase);
+  
+  useEffect(() => {
+    async function fetchHeadquarters() {
+      const fetchHeadquarters = await searchDocumentOrCreate(userFirebase.email);
+      setHeadquarters(fetchHeadquarters);
+      dispatch(setArrayHeadquarters(fetchHeadquarters))
+      console.log(fetchHeadquarters)
+    }
+    fetchHeadquarters();
+  }, [userFirebase]);
 
   return (
     <Box sx={{ display: "flex" }}>

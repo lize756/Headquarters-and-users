@@ -22,6 +22,8 @@ import {
 } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
+
+
 // Servicio de autenticación de firebase inicializado con la aplicación
 const auth = getAuth(firebaseApp);
 
@@ -46,12 +48,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide(props) {
+
+
   const [isRegister, setIsRegister] = React.useState(false);
   let navigate = useNavigate();
 
   onAuthStateChanged(auth, (isExistfiberaseUser) => {
     if (isExistfiberaseUser) {
-      navigate("/home/listuser");
+      navigate("/home/listhead");
     }
   });
 
@@ -68,7 +72,6 @@ export default function SignInSide(props) {
       //User login
       signInWithEmailAndPassword(auth, email, password);
     }
-    console.log(user);
   }
 
   return (

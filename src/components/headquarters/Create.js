@@ -12,7 +12,12 @@ import {
   Stack,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setArrayHeadquarters } from "../../store/FirebaseSlice";
+import firebaseApp from "../../credentiales";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { getSelectionRange } from "@testing-library/user-event/dist/utils";
 const validationSchema = yup.object({
   headquarterName: yup
     .string("Ingresa el nombre de la sede")
@@ -35,7 +40,22 @@ const validationSchema = yup.object({
     .required("Campo obligatorio"),
 });
 
+
+const firestore = getFirestore(firebaseApp);
+
+
 const Create = () => {
+  let navigate = useNavigate()
+  /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const userFirebase = useSelector((state) => state.FirebaseSlice.userFirebase);
+  const array_headquarter = useSelector((state) => state.FirebaseSlice.arrayHeadquarters);
+
   const listCities = ["Bogota", "Cali", "Medellin"];
   const [checked, setChecked] = useState(true);
   const [cities, setCities] = useState("Cali");
@@ -54,7 +74,28 @@ const Create = () => {
     onSubmit: (values) => {
       values.cityName = cities;
       values.isActive = checked;
-      alert(JSON.stringify(values, null, 2));
+     // alert(JSON.stringify(values, null, 2));
+      // Create new array of headQuarters
+      const newArrayHead = [
+        ...array_headquarter,
+        {
+          id: Math.random().toString(36).substr(2, 18),
+          headquarterName: values.headquarterName,
+          contactName: values.contactName,
+          contactPhone: values.contactPhone,
+          contactEmail: values.contactEmail,
+          headquarterAddress: values.headquarterAddress,
+          headquarterZipcode: values.headquarterZipcode,
+          cityName: values.cityName,
+          isActive: values.isActive,
+        },
+      ];
+      // actualizar base de datos
+      const docRef = doc(firestore, `user/${userFirebase.email}`);
+      updateDoc(docRef, { headquarters: [...newArrayHead] });
+      //actualizar estado
+      dispatch(setArrayHeadquarters(newArrayHead));
+      navigate("/home/listhead")
     },
   });
   return (

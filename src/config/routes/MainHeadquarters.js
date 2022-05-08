@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../../pages/Home";
 import CreateHeadquarter from "../../components/headquarters/Create";
@@ -8,33 +8,35 @@ import UpdateUser from "../../components/users/Update";
 import ListUser from "../../components/search/ListUser";
 import SignInSide from "../../components/login/SignInSide";
 import firebaseApp from "../../credentiales";
-import {getAuth,onAuthStateChanged} from "firebase/auth"
-
-
-const auth = getAuth(firebaseApp)
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import ListHeadquuarters from "../../components/headquarters/list/ListHeadquarters";
 import Details from "../../components/headquarters/information/Details";
+//Redux
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { setUserFirebase } from "../../store/FirebaseSlice";
 
+const auth = getAuth(firebaseApp);
 const MainHeadquarters = () => {
+  /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (isExistfiberaseUser) => {
+      if (isExistfiberaseUser) {
+        // Session is started
+        dispatch(setUserFirebase(isExistfiberaseUser));
+      } else {
+        // Session is not started
+        dispatch(setUserFirebase({}));
+      }
+    });
+  },[]);
 
-
-  const [getGlobalUser, setGlobarUser] = useState(null);
-
-
-  onAuthStateChanged(auth,(isExistfiberaseUser)=>{
-    if(isExistfiberaseUser){
-      // Session is started
-      setGlobarUser(isExistfiberaseUser)
-    }else{
-      // Session is not started
-      setGlobarUser(null)
-    }
-  })
-
-  
-
-  
   return (
     <>
       <Routes>
@@ -58,7 +60,7 @@ const MainHeadquarters = () => {
           <Route path="listuser" element={<ListUser />} />
         </Route>
 
-        <Route path="/home" element={<Home />}>
+        <Route path="/home" element={<Home userEmail />}>
           <Route path="listhead" element={<ListHeadquuarters />} />
         </Route>
 
