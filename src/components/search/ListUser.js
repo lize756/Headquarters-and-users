@@ -8,10 +8,13 @@ import {
   TableRow,
   TableBody,
   TablePagination,
-  Button,
+  Grid,
 } from "@mui/material";
 
 import User from "./User";
+import SearchByName from "./SearchByName";
+import SearchByHeadquarters from "./SearchByHeadquarters";
+
 const ListUser = () => {
   const [userList, setUserList] = useState([]);
 
@@ -37,7 +40,16 @@ const ListUser = () => {
 
   return (
     <div>
-      <Paper sx={{ width: "100%", overflow: "hidden", mt: 10 }}>
+      <Paper sx={{ width: "120%", mt: 10 }}>
+        <Grid container spacing={1} mx={1} mt={2}>
+          <Grid item xs={6}>
+            <SearchByName />
+          </Grid>
+          <Grid item xs={6}>
+            <SearchByHeadquarters />
+          </Grid>
+        </Grid>
+
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
