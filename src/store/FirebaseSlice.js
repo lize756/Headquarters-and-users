@@ -9,6 +9,8 @@ export const FirebaseSlice = createSlice({
      userFirebase: {},
      arrayHeadquarters:[],
      array_users:[],
+     currentHeadquarter:{}
+  
   },
   reducers: {
     /**
@@ -27,10 +29,14 @@ export const FirebaseSlice = createSlice({
     setArrayUsers: (state, action) => {
       state.array_users = action.payload;
     },
+
+    setCurrentHeadquarter: (state, action) => {
+      state.currentHeadquarter = action.payload;
+    },
   
   },
   
 });
 //Export the action to reducer of firebase
-export const { setUserFirebase, setArrayHeadquarters,setArrayUsers} = FirebaseSlice.actions;
+export const { setUserFirebase,setCurrentHeadquarter, setArrayHeadquarters,setArrayUsers} = FirebaseSlice.actions;
 export default FirebaseSlice.reducer;

@@ -12,6 +12,16 @@ import {
   Stack,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import { useDispatch, useSelector } from "react-redux";
+import firebaseApp from "../../credentiales";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
+
+const database = getDatabase();
+/**
+ * Init auth and firestore
+ */
+const firestore = getFirestore(firebaseApp);
 
 const validationSchema = yup.object({
   userName: yup
@@ -33,7 +43,18 @@ const validationSchema = yup.object({
 });
 
 const Create = () => {
-  const listHeadquarter = ["Olimpo", "Capitolio", "Hogwart"];
+  /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const array_headquarter = useSelector(
+    (state) => state.FirebaseSlice.arrayHeadquarters
+  );
+
+  const listHeadquarter = array_headquarter;
   const [checked, setChecked] = useState(true);
   const [headquarter, setHeadquarter] = useState("Olimpo");
   const formik = useFormik({
@@ -51,6 +72,19 @@ const Create = () => {
       values.headquarter = headquarter;
       values.isActive = checked;
       alert(JSON.stringify(values, null, 2));
+
+      const user = {
+        userName: values.userName,
+        userLastName: values.userLastName,
+        userEmail: values.userEmail,
+        userPassword: values.userPassword,
+        userValide: values.userValide,
+        isActive: checked,
+      };
+
+      database.collection("user").doc(headquarter.id).update({
+        users: user
+      });
     },
   });
   return (
@@ -158,7 +192,7 @@ const Create = () => {
                 //List of cities
                 options={listHeadquarter}
                 value={headquarter}
-                getOptionLabel={(option) => option}
+                getOptionLabel={(option) => option.headquarterName}
                 onChange={(event, value) => setHeadquarter(value)}
                 renderInput={(params) => (
                   <TextField
