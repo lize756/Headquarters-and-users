@@ -171,7 +171,7 @@ const Home = () => {
             button
             key="Users"
             onClick={() => {
-              navigate("/home");
+              navigate("/home/listuser");
             }}
           >
             <ListItemIcon>
