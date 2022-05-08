@@ -52,7 +52,7 @@ const Update = () => {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      values.CityName = cities;
+      values.cityName = cities;
       values.isActive = checked;
       alert(JSON.stringify(values, null, 2));
     },

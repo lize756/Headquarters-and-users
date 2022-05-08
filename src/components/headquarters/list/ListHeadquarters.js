@@ -43,7 +43,7 @@ const ListHeadquarters = () => {
   };
   return (
     <div>
-      <Paper sx={{ width: "120%", mt: 10 }}>
+      <Paper sx={{ width: "300", mt: 10, mx: 5 }}>
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
