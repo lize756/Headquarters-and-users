@@ -13,6 +13,17 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import banner_cedep from "../../assets/img_login.png";
+import firebaseApp from "../../credentiales";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+
+import { useNavigate } from "react-router-dom";
+// Servicio de autenticación de firebase inicializado con la aplicación
+const auth = getAuth(firebaseApp);
 
 function Copyright(props) {
   return (
@@ -34,15 +45,31 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event) => {
+export default function SignInSide(props) {
+  const [isRegister, setIsRegister] = React.useState(false);
+  let navigate = useNavigate();
+
+  onAuthStateChanged(auth, (isExistfiberaseUser) => {
+    if (isExistfiberaseUser) {
+      navigate("/home/listuser");
+    }
+  });
+
+  async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+    const email = data.get("email");
+    const password = data.get("password");
+    let user;
+    if (isRegister) {
+      // User register
+      user = await createUserWithEmailAndPassword(auth, email, password);
+    } else {
+      //User login
+      signInWithEmailAndPassword(auth, email, password);
+    }
+    console.log(user);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,7 +105,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              {isRegister ? "Registrarse" : "Iniciar sesión"}
             </Typography>
             <Box
               component="form"
@@ -116,19 +143,17 @@ export default function SignInSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                {isRegister ? "Registrate" : "Inicia sesión"}
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+              <Grid item>
+                <Link
+                  onClick={() => setIsRegister(!isRegister)}
+                  variant="body2"
+                >
+                  {isRegister
+                    ? "¿Ya tienes cuenta? Inicia sesión"
+                    : "¿No tienes cuenta? Regístrate"}
+                </Link>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>

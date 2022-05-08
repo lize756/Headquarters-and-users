@@ -22,7 +22,11 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import StoreIcon from "@mui/icons-material/Store";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupIcon from "@mui/icons-material/Group";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { getAuth, signOut } from "firebase/auth";
+import firebaseApp from "../credentiales";
 
+const auth = getAuth(firebaseApp);
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -82,6 +86,11 @@ const Home = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  async function handleLogOut(e) {
+    const result = await signOut(auth);
+    navigate("/login")
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -178,6 +187,12 @@ const Home = () => {
               <GroupIcon color="primary" />
             </ListItemIcon>
             <ListItemText primary="Ver usuarios" />
+          </ListItem>
+          <ListItem button key="logOut" onClick={handleLogOut}>
+            <ListItemIcon>
+              <LogoutIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Cerrar sesión" />
           </ListItem>
         </List>
       </Drawer>
