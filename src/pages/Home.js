@@ -152,7 +152,7 @@ const Home = () => {
             button
             key="listHead"
             onClick={() => {
-              navigate("/home");
+              navigate("/home/listhead");
             }}
           >
             <ListItemIcon>

@@ -11,17 +11,15 @@ import {
   Grid,
 } from "@mui/material";
 
-import User from "./User";
-import SearchByName from "./SearchByName";
-import SearchByHeadquarters from "./SearchByHeadquarters";
+import Headquarter from "./Headquarter";
 
-const ListUser = () => {
-  const [userList, setUserList] = useState([]);
+const ListHeadquarters = () => {
+  const [headquarterList, setHeadquarterListList] = useState([]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const delUser = () => {};
+  const delHead = () => {};
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
@@ -33,32 +31,29 @@ const ListUser = () => {
   };
 
   const renderList = () => {
-    return userList
+    return headquarterList
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((user) => <User user={user} key={user.id} delUser={delUser} />);
+      .map((headquarter) => (
+        <Headquarter
+          headquarter={headquarter}
+          key={headquarter.id}
+          delHead={delHead}
+        />
+      ));
   };
-
   return (
     <div>
-      <Paper sx={{ width: "140%", mt: 10, mx: 10 }}>
-        <Grid container spacing={1} mx={1} mt={2}>
-          <Grid item xs={6}>
-            <SearchByName />
-          </Grid>
-          <Grid item xs={6}>
-            <SearchByHeadquarters />
-          </Grid>
-        </Grid>
-
+      <Paper sx={{ width: "300", mt: 10, mx: 5 }}>
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="right">Nombre</TableCell>
-                <TableCell align="right">Apellido</TableCell>
+                <TableCell align="right">Nombre sede</TableCell>
+                <TableCell align="right">Nombre del contacto</TableCell>
                 <TableCell align="right">Correo Eletronico </TableCell>
-                <TableCell align="right">Duración usuario </TableCell>
-                <TableCell align="right">Sede </TableCell>
+                <TableCell align="right">Telefonó </TableCell>
+                <TableCell align="right">Dirección </TableCell>
+                <TableCell align="right">Ciudad </TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -68,7 +63,7 @@ const ListUser = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={userList.length}
+          count={headquarterList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -79,4 +74,4 @@ const ListUser = () => {
   );
 };
 
-export default ListUser;
+export default ListHeadquarters;
