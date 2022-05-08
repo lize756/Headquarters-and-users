@@ -130,7 +130,7 @@ const Home = () => {
             button
             key="Create"
             onClick={() => {
-              navigate("/home");
+              navigate("/home/createhead");
             }}
           >
             <ListItemIcon>
@@ -143,7 +143,7 @@ const Home = () => {
             button
             key="listHead"
             onClick={() => {
-              navigate("/home/createhead");
+              navigate("/home");
             }}
           >
             <ListItemIcon>
