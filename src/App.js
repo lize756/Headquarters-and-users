@@ -1,11 +1,16 @@
 import "./App.css";
-import Create from "./components/headquarters/Create";
+
+//import router to control the router of all aplication
+import { BrowserRouter as Router } from "react-router-dom";
+import Headquarters from "./config/routes/MainHeadquarters";
 
 function App() {
   return (
-    <div className="App">
-      <Create />
-    </div>
+    <Router>
+      <div className="App">
+        <Headquarters />
+      </div>
+    </Router>
   );
 }
 
