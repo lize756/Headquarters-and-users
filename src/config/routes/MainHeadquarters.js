@@ -7,6 +7,7 @@ import CreateUser from "../../components/users/Create";
 import UpdateUser from "../../components/users/Update";
 import ListUser from "../../components/search/ListUser";
 import SignInSide from "../../components/login/SignInSide";
+import ListHeadquuarters from "../../components/headquarters/list/ListHeadquarters";
 
 const MainHeadquarters = () => {
   return (
@@ -30,6 +31,9 @@ const MainHeadquarters = () => {
 
         <Route path="/home" element={<Home />}>
           <Route path="listuser" element={<ListUser />} />
+        </Route>
+        <Route path="/home" element={<Home />}>
+          <Route path="listhead" element={<ListHeadquuarters />} />
         </Route>
 
         <Route path="/login" element={<SignInSide />} />
